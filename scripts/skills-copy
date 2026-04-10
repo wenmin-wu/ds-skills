@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Copy skills to a flat directory structure for Claude Code, Cursor, or Codex.
+
+Nested layout (this repo):   skills/nlp/deberta-classification/SKILL.md
+Flat layout (destination):   nlp-deberta-classification/SKILL.md
+
+Usage:
+    scripts/skills-copy --dest ~/.claude/skills      # Claude Code global skills
+    scripts/skills-copy --dest ~/.cursor/skills       # Cursor
+    scripts/skills-copy --dest ~/codex-skills         # any flat directory
+    scripts/skills-copy --dest ./out --dry-run        # preview without copying
+    scripts/skills-copy --dest ./out --domain nlp     # copy only NLP skills
+    scripts/skills-copy --list                        # list flat names
+"""
+
+import argparse
+import shutil
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = REPO_ROOT / "skills"
+
+
+def discover_skills(domain_filter: str | None = None) -> list[dict]:
+    """Walk skills/ and return metadata for each skill directory."""
+    skills = []
+    for skill_md in sorted(SKILLS_DIR.rglob("SKILL.md")):
+        skill_dir = skill_md.parent
+        parts = skill_dir.relative_to(SKILLS_DIR).parts
+        domain = parts[0] if parts else "unknown"
+        slug = parts[1] if len(parts) > 1 else parts[0]
+
+        if domain_filter and domain != domain_filter:
+            continue
+
+        flat_name = f"{domain}-{slug}"
+        skills.append({
+            "source": skill_dir,
+            "flat_name": flat_name,
+            "domain": domain,
+            "slug": slug,
+        })
+    return skills
+
+
+def copy_skills(skills: list[dict], dest: Path, dry_run: bool = False) -> int:
+    """Copy skills to flat destination. Returns count of copied skills."""
+    if not dry_run:
+        dest.mkdir(parents=True, exist_ok=True)
+
+    copied = 0
+    for s in skills:
+        target = dest / s["flat_name"]
+        if dry_run:
+            print(f"  [dry-run] {s['flat_name']}/", file=sys.stderr)
+        else:
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.copytree(s["source"], target)
+            print(f"  {s['flat_name']}/", file=sys.stderr)
+        copied += 1
+    return copied
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Copy ds-skills to a flat directory for AI coding agents"
+    )
+    parser.add_argument("--dest", type=Path, help="Destination directory")
+    parser.add_argument("--domain", type=str, help="Filter by domain (nlp, cv, tabular, timeseries, llm)")
+    parser.add_argument("--dry-run", action="store_true", help="Preview without copying")
+    parser.add_argument("--list", action="store_true", help="List flat skill names")
+    parser.add_argument("--clean", action="store_true", help="Remove existing ds-skills from dest before copying")
+    args = parser.parse_args()
+
+    if not SKILLS_DIR.is_dir():
+        print("skills-copy: missing skills/ directory. Run from repo root.", file=sys.stderr)
+        sys.exit(1)
+
+    skills = discover_skills(args.domain)
+
+    if not skills:
+        print("No skills found.", file=sys.stderr)
+        sys.exit(1)
+
+    if args.list:
+        for s in skills:
+            print(s["flat_name"])
+        return
+
+    if not args.dest:
+        print("skills-copy: --dest is required (e.g. --dest ~/.claude/skills)", file=sys.stderr)
+        sys.exit(2)
+
+    dest = args.dest.expanduser().resolve()
+
+    if args.clean and not args.dry_run:
+        # Remove only skills that match our naming pattern
+        for s in skills:
+            target = dest / s["flat_name"]
+            if target.exists():
+                shutil.rmtree(target)
+                print(f"  [clean] removed {s['flat_name']}/", file=sys.stderr)
+
+    print(f"Copying {len(skills)} skills to {dest}/", file=sys.stderr)
+    copied = copy_skills(skills, dest, dry_run=args.dry_run)
+
+    action = "would copy" if args.dry_run else "copied"
+    print(f"\n{action} {copied} skills to {dest}/", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,487 @@
+#!/usr/bin/env python3
+"""List all skills with path, name, and description. Optionally generate mindmap HTML.
+
+Usage:
+    scripts/skills-list              # human-readable table
+    scripts/skills-list --json       # JSON to stdout, messages to stderr
+    scripts/skills-list --html       # generate graphify-out/skills-map.html
+"""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SKILLS_DIR = REPO_ROOT / "skills"
+HTML_OUT = REPO_ROOT / "graph" / "skills-map.html"
+
+
+def extract_frontmatter(path: Path) -> dict:
+    """Extract name and description from YAML frontmatter."""
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---"):
+        return {"error": "missing frontmatter"}
+    end = text.index("\n---", 3)
+    block = text[3:end].strip()
+
+    result = {}
+    for line in block.split("\n"):
+        line = line.strip()
+        if line.startswith("name:"):
+            result["name"] = line[len("name:"):].strip().strip("'\"")
+        elif line.startswith("description:"):
+            val = line[len("description:"):].strip()
+            if val == ">":
+                continue  # multiline — next line has the value
+            result["description"] = val.strip("'\"")
+        elif "name" in result and "description" not in result and not line.startswith(("---",)):
+            # continuation of multiline description
+            result["description"] = line.strip().strip("'\"")
+    return result
+
+
+def discover_skills() -> list[dict]:
+    """Walk skills/ and return metadata for each SKILL.md."""
+    skills = []
+    for skill_md in sorted(SKILLS_DIR.rglob("SKILL.md")):
+        rel = skill_md.relative_to(REPO_ROOT)
+        parts = skill_md.parent.relative_to(SKILLS_DIR).parts
+        domain = parts[0] if parts else "unknown"
+        slug = parts[1] if len(parts) > 1 else parts[0]
+
+        meta = extract_frontmatter(skill_md)
+        skills.append({
+            "path": str(rel),
+            "domain": domain,
+            "slug": slug,
+            "name": meta.get("name", slug),
+            "description": meta.get("description", ""),
+        })
+    return skills
+
+
+def print_human(skills: list[dict]) -> None:
+    """Print a grouped human-readable listing."""
+    by_domain: dict[str, list[dict]] = {}
+    for s in skills:
+        by_domain.setdefault(s["domain"], []).append(s)
+
+    total = len(skills)
+    print(f"ds-skills: {total} skills across {len(by_domain)} domains\n")
+    for domain in sorted(by_domain):
+        group = by_domain[domain]
+        print(f"## {domain} ({len(group)})")
+        for s in group:
+            desc = s["description"][:80] + "..." if len(s["description"]) > 80 else s["description"]
+            print(f"  {s['slug']:<45} {desc}")
+        print()
+
+
+def generate_html(skills: list[dict], out: Path) -> None:
+    """Generate an interactive mindmap HTML using vis.js network."""
+    by_domain: dict[str, list[dict]] = {}
+    for s in skills:
+        by_domain.setdefault(s["domain"], []).append(s)
+
+    domain_colors = {
+        "tabular": "#22c55e",
+        "nlp": "#3b82f6",
+        "cv": "#f59e0b",
+        "timeseries": "#a855f7",
+        "llm": "#ef4444",
+    }
+    domain_icons = {
+        "tabular": "table",
+        "nlp": "text",
+        "cv": "image",
+        "timeseries": "chart",
+        "llm": "brain",
+    }
+
+    # Build vis.js nodes and edges
+    nodes = []
+    edges = []
+
+    # Central node
+    nodes.append({
+        "id": 0,
+        "label": f"ds-skills",
+        "shape": "circle",
+        "color": {"background": "#18181b", "border": "#18181b", "highlight": {"background": "#27272a", "border": "#3f3f46"}},
+        "font": {"color": "#fafafa", "size": 20, "face": "Inter, system-ui, sans-serif", "bold": True},
+        "size": 50,
+        "fixed": True,
+        "x": 0,
+        "y": 0,
+        "borderWidth": 0,
+        "shadow": {"enabled": True, "color": "rgba(0,0,0,0.3)", "size": 20, "x": 0, "y": 4},
+    })
+
+    nid = 1
+    for domain in sorted(by_domain):
+        color = domain_colors.get(domain, "#607D8B")
+        group = by_domain[domain]
+
+        # Domain node
+        domain_id = nid
+        nodes.append({
+            "id": domain_id,
+            "label": f"{domain.upper()} ({len(group)})",
+            "shape": "circle",
+            "color": {"background": color, "border": color, "highlight": {"background": color, "border": "#fff"}},
+            "font": {"color": "#fff", "size": 15, "face": "Inter, system-ui, sans-serif", "bold": True},
+            "size": 32,
+            "borderWidth": 0,
+            "shadow": {"enabled": True, "color": color + "44", "size": 16, "x": 0, "y": 3},
+        })
+        edges.append({
+            "from": 0, "to": domain_id, "width": 2.5,
+            "color": {"color": color, "opacity": 0.35, "highlight": color},
+            "smooth": {"type": "continuous"},
+        })
+        nid += 1
+
+        # Skill nodes
+        for s in group:
+            label = s["slug"].replace("-", " ")
+            nodes.append({
+                "id": nid,
+                "label": label,
+                "title": f"<div style='max-width:320px;font-family:Inter,system-ui,sans-serif;font-size:13px;line-height:1.5'>"
+                         f"<div style='font-weight:600;margin-bottom:4px;color:{color}'>{s['name']}</div>"
+                         f"<div style='color:#555;margin-bottom:6px'>{s['description']}</div>"
+                         f"<code style='font-size:11px;color:#888'>{s['path']}</code></div>",
+                "shape": "box",
+                "color": {
+                    "background": "#ffffff",
+                    "border": color + "66",
+                    "highlight": {"background": color + "18", "border": color},
+                    "hover": {"background": color + "0d", "border": color},
+                },
+                "font": {"size": 13, "face": "Inter, system-ui, sans-serif", "color": "#374151"},
+                "margin": {"top": 10, "bottom": 10, "left": 14, "right": 14},
+                "borderWidth": 1.5,
+                "borderWidthSelected": 2.5,
+                "shapeProperties": {"borderRadius": 6},
+                "shadow": {"enabled": True, "color": "rgba(0,0,0,0.06)", "size": 8, "x": 0, "y": 2},
+                "widthConstraint": {"minimum": 100, "maximum": 200},
+            })
+            edges.append({
+                "from": domain_id, "to": nid,
+                "color": {"color": color + "33", "highlight": color + "88"},
+                "width": 1.2,
+                "smooth": {"type": "cubicBezier", "roundness": 0.5},
+            })
+            nid += 1
+
+    nodes_json = json.dumps(nodes)
+    edges_json = json.dumps(edges)
+    skills_data_json = json.dumps({s["slug"]: s for s in skills})
+
+    legend_html = "".join(
+        f'<button class="legend-btn" data-domain="{d}" style="--c:{domain_colors.get(d,"#607D8B")}">'
+        f'<span class="legend-dot"></span>{d}<span class="legend-count">{len(by_domain[d])}</span></button>'
+        for d in sorted(by_domain)
+    )
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ds-skills — {len(skills)} skills</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  body {{ background: #f8fafc; font-family: Inter, system-ui, sans-serif; overflow: hidden; }}
+
+  #header {{
+    padding: 0 24px; height: 52px; background: #18181b; color: #fafafa;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #27272a;
+  }}
+  #header h1 {{ font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }}
+  .header-sep {{ width: 1px; height: 20px; background: #3f3f46; }}
+  .stat {{ font-size: 12px; color: #a1a1aa; font-weight: 500; }}
+  .stat b {{ color: #e4e4e7; font-weight: 600; }}
+  #search {{
+    margin-left: auto; padding: 7px 12px 7px 32px; border: 1px solid #3f3f46;
+    border-radius: 8px; background: #27272a; color: #e4e4e7; font-size: 13px;
+    width: 260px; outline: none; font-family: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2371717a' viewBox='0 0 24 24'%3E%3Cpath d='M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z' stroke='%2371717a' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 10px center;
+    transition: border-color 0.15s, background-color 0.15s;
+  }}
+  #search:focus {{ border-color: #3b82f6; background: #1e1e22; }}
+  #search::placeholder {{ color: #71717a; }}
+
+  #toolbar {{
+    padding: 8px 24px; background: #fff; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }}
+  .legend-btn {{
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 20px;
+    background: #fff; font-size: 12px; font-weight: 500; color: #374151;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+  }}
+  .legend-btn:hover {{ background: #f3f4f6; }}
+  .legend-btn.active {{ border-color: var(--c); background: color-mix(in srgb, var(--c) 8%, white); }}
+  .legend-dot {{ width: 8px; height: 8px; border-radius: 50%; background: var(--c); }}
+  .legend-count {{
+    background: #f3f4f6; padding: 1px 6px; border-radius: 10px;
+    font-size: 11px; color: #6b7280;
+  }}
+  .toolbar-sep {{ flex: 1; }}
+  #reset-btn {{
+    padding: 5px 12px; border: 1px solid #e5e7eb; border-radius: 6px;
+    background: #fff; font-size: 12px; color: #6b7280; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
+  }}
+  #reset-btn:hover {{ background: #f3f4f6; color: #374151; }}
+
+  #graph {{ width: 100%; height: calc(100vh - 94px); }}
+
+  #detail {{
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #18181b; color: #e4e4e7; padding: 12px 20px;
+    border-radius: 12px; font-size: 13px; line-height: 1.5;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.24); max-width: 480px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    z-index: 10;
+  }}
+  #detail.visible {{ opacity: 1; pointer-events: auto; }}
+  #detail .d-name {{ font-weight: 600; font-size: 14px; color: #fff; margin-bottom: 2px; }}
+  #detail .d-desc {{ color: #a1a1aa; }}
+  #detail .d-path {{ font-family: monospace; font-size: 11px; color: #71717a; margin-top: 4px; }}
+  #detail .d-domain {{
+    display: inline-block; padding: 1px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 600; margin-bottom: 4px;
+  }}
+
+  div.vis-tooltip {{
+    background: #18181b !important; color: #e4e4e7 !important;
+    border: 1px solid #3f3f46 !important; border-radius: 10px !important;
+    padding: 12px 16px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.3) !important;
+    max-width: 340px !important; font-family: Inter, system-ui, sans-serif !important;
+  }}
+  div.vis-tooltip b, div.vis-tooltip div[style*="font-weight:600"] {{ color: #fff !important; }}
+  div.vis-tooltip div[style*="color:#555"] {{ color: #a1a1aa !important; }}
+  div.vis-tooltip code {{ color: #71717a !important; }}
+
+  /* hide vis.js nav buttons — we use our own reset */
+  div.vis-navigation {{ display: none; }}
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>ds-skills</h1>
+  <div class="header-sep"></div>
+  <span class="stat"><b>{len(skills)}</b> skills</span>
+  <span class="stat"><b>{len(by_domain)}</b> domains</span>
+  <input id="search" type="text" placeholder="Search skills... (Ctrl+K)" autocomplete="off">
+</div>
+<div id="toolbar">
+  {legend_html}
+  <span class="toolbar-sep"></span>
+  <button id="reset-btn">Reset view</button>
+</div>
+<div id="graph"></div>
+<div id="detail">
+  <div class="d-domain"></div>
+  <div class="d-name"></div>
+  <div class="d-desc"></div>
+  <div class="d-path"></div>
+</div>
+<script>
+const DOMAIN_COLORS = {json.dumps(domain_colors)};
+const SKILLS_DATA = {skills_data_json};
+
+const nodes = new vis.DataSet({nodes_json});
+const edges = new vis.DataSet({edges_json});
+
+const container = document.getElementById("graph");
+const network = new vis.Network(container, {{ nodes, edges }}, {{
+  layout: {{ improvedLayout: true, hierarchical: false }},
+  physics: {{
+    solver: "forceAtlas2Based",
+    forceAtlas2Based: {{
+      gravitationalConstant: -90,
+      centralGravity: 0.01,
+      springLength: 140,
+      springConstant: 0.025,
+      damping: 0.45,
+      avoidOverlap: 0.4,
+    }},
+    stabilization: {{ iterations: 400, fit: true }},
+    maxVelocity: 28,
+  }},
+  interaction: {{
+    hover: true,
+    tooltipDelay: 200,
+    keyboard: {{ enabled: true, speed: {{ x: 10, y: 10, zoom: 0.03 }} }},
+    zoomView: true,
+    dragView: true,
+  }},
+  nodes: {{ chosen: true }},
+  edges: {{ chosen: true }},
+}});
+
+// Fit after stabilization — zoom to readable level, not tiny overview
+network.once("stabilized", () => {{
+  network.fit({{ animation: {{ duration: 400, easingFunction: "easeInOutQuad" }} }});
+  // Ensure minimum readable scale
+  setTimeout(() => {{
+    const scale = network.getScale();
+    if (scale < 0.4) {{
+      network.moveTo({{ scale: 0.45, animation: {{ duration: 500, easingFunction: "easeInOutQuad" }} }});
+    }}
+  }}, 500);
+}});
+
+// Detail panel on click
+const detail = document.getElementById("detail");
+network.on("click", (params) => {{
+  if (params.nodes.length === 0) {{
+    detail.classList.remove("visible");
+    return;
+  }}
+  const nodeId = params.nodes[0];
+  const node = nodes.get(nodeId);
+  const slug = (node.label || "").replace(/ /g, "-");
+  const skill = SKILLS_DATA[slug];
+  if (!skill) {{
+    detail.classList.remove("visible");
+    return;
+  }}
+  const color = DOMAIN_COLORS[skill.domain] || "#607D8B";
+  detail.querySelector(".d-domain").textContent = skill.domain;
+  detail.querySelector(".d-domain").style.cssText = `background:${{color}}22;color:${{color}}`;
+  detail.querySelector(".d-name").textContent = skill.name;
+  detail.querySelector(".d-desc").textContent = skill.description;
+  detail.querySelector(".d-path").textContent = skill.path;
+  detail.classList.add("visible");
+}});
+
+// Domain filter buttons
+let activeFilter = null;
+const allNodes = nodes.get();
+const legendBtns = document.querySelectorAll(".legend-btn");
+
+legendBtns.forEach(btn => {{
+  btn.addEventListener("click", () => {{
+    const domain = btn.dataset.domain;
+    if (activeFilter === domain) {{
+      activeFilter = null;
+      btn.classList.remove("active");
+      nodes.update(allNodes.map(n => ({{ id: n.id, hidden: false }})));
+    }} else {{
+      activeFilter = domain;
+      legendBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      filterByDomain(domain);
+    }}
+  }});
+}});
+
+function filterByDomain(domain) {{
+  const domainSkills = Object.values(SKILLS_DATA).filter(s => s.domain === domain);
+  const slugs = new Set(domainSkills.map(s => s.slug.replace(/-/g, " ")));
+  const matched = new Set([0]); // always show center
+  allNodes.forEach(n => {{
+    if (slugs.has(n.label) || n.label.includes(domain.toUpperCase())) matched.add(n.id);
+  }});
+  edges.get().forEach(e => {{ if (matched.has(e.to)) matched.add(e.from); }});
+  nodes.update(allNodes.map(n => ({{ id: n.id, hidden: !matched.has(n.id) }})));
+  setTimeout(() => network.fit({{ animation: true }}), 100);
+}}
+
+// Search filter
+const searchInput = document.getElementById("search");
+searchInput.addEventListener("input", () => {{
+  const q = searchInput.value.toLowerCase();
+  activeFilter = null;
+  legendBtns.forEach(b => b.classList.remove("active"));
+  if (!q) {{
+    nodes.update(allNodes.map(n => ({{ id: n.id, hidden: false }})));
+    return;
+  }}
+  const matched = new Set([0]);
+  allNodes.forEach(n => {{
+    if ((n.label || "").toLowerCase().includes(q) || (n.title || "").toLowerCase().includes(q)) matched.add(n.id);
+  }});
+  edges.get().forEach(e => {{ if (matched.has(e.to)) matched.add(e.from); }});
+  nodes.update(allNodes.map(n => ({{ id: n.id, hidden: !matched.has(n.id) }})));
+}});
+
+// Keyboard shortcut
+document.addEventListener("keydown", (e) => {{
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {{
+    e.preventDefault();
+    searchInput.focus();
+  }}
+  if (e.key === "Escape") {{
+    searchInput.value = "";
+    searchInput.blur();
+    activeFilter = null;
+    legendBtns.forEach(b => b.classList.remove("active"));
+    nodes.update(allNodes.map(n => ({{ id: n.id, hidden: false }})));
+    detail.classList.remove("visible");
+    network.fit({{ animation: true }});
+  }}
+}});
+
+// Reset button
+document.getElementById("reset-btn").addEventListener("click", () => {{
+  searchInput.value = "";
+  activeFilter = null;
+  legendBtns.forEach(b => b.classList.remove("active"));
+  nodes.update(allNodes.map(n => ({{ id: n.id, hidden: false }})));
+  detail.classList.remove("visible");
+  network.fit({{ animation: {{ duration: 500, easingFunction: "easeInOutQuad" }} }});
+}});
+</script>
+</body>
+</html>"""
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html, encoding="utf-8")
+    print(f"Wrote {out}", file=sys.stderr)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="List ds-skills with metadata")
+    parser.add_argument("--json", action="store_true", help="Output JSON to stdout")
+    parser.add_argument("--html", action="store_true", help="Generate mindmap HTML")
+    parser.add_argument("--html-out", type=Path, default=HTML_OUT, help="HTML output path")
+    args = parser.parse_args()
+
+    if not SKILLS_DIR.is_dir():
+        print("skills-list: missing skills/ directory. Run from repo root.", file=sys.stderr)
+        sys.exit(1)
+
+    skills = discover_skills()
+
+    if not skills:
+        print("No skills found.", file=sys.stderr)
+        sys.exit(1)
+
+    if args.json:
+        json.dump(skills, sys.stdout, indent=2)
+        print()
+        print(f"{len(skills)} skills found", file=sys.stderr)
+    elif args.html:
+        generate_html(skills, args.html_out)
+    else:
+        print_human(skills)
+
+    if args.html or (not args.json and not args.html):
+        # Always generate HTML alongside human output
+        if not args.html:
+            generate_html(skills, args.html_out)
+
+
+if __name__ == "__main__":
+    main()
