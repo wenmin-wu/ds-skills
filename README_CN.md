@@ -6,7 +6,7 @@
 
 从优秀 Kaggle Notebook 中提炼的数据科学技能库。
 
-120 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
+126 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
 
 > 持续更新中 —— 600+ 场竞赛待处理，自动化蒸馏 Agent 定期提取新技能。Star 本仓库以获取最新动态。
 
@@ -14,7 +14,7 @@
 
 | 领域 | 数量 | 示例 |
 |------|------|------|
-| **tabular** (表格数据) | 31 | adversarial-validation, optuna-lgbm-tuning, rank-calibrated-blending, per-feature-bias-correction |
+| **tabular** (表格数据) | 37 | adversarial-validation, crps-cdf-loss, optuna-lgbm-tuning, spatial-distance-aggregation |
 | **nlp** (自然语言处理) | 39 | deberta-classification, layerwise-lr-decay, mbr-decoding-reranking, multi-temperature-candidate-sampling |
 | **cv** (计算机视觉) | 24 | arcface-metric-learning, chunked-gpu-similarity-search, dicom-hounsfield-normalization, knn-distance-threshold-matching |
 | **timeseries** (时间序列) | 21 | mc-dropout-uncertainty, correlated-double-sampling, gradient-event-boundary-detection, learnable-fir-filter |
@@ -78,7 +78,7 @@ skills/<领域>/<技巧名>/SKILL.md
 
 每个技能均从 [Kaggle](https://www.kaggle.com) 高票 Notebook 中提炼。每个 SKILL.md 的参考部分链接到原始 Notebook。
 
-已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配。
+已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配、NFL 大数据碗。
 
 ## 许可
 
