@@ -1,0 +1,56 @@
+name: 技能请求
+description: 请求添加新的数据科学技能
+labels: ["skill-request"]
+body:
+  - type: input
+    id: skill-name
+    attributes:
+      label: 技能名称
+      description: 技术的简短名称（例如 "gradient-checkpointing"、"deberta-v3-finetuning"）
+      placeholder: 例如 stochastic-weight-averaging
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: 领域
+      description: 该技能属于哪个领域？
+      options:
+        - tabular
+        - nlp
+        - cv
+        - timeseries
+        - llm
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 描述
+      description: 这个技术是做什么的？什么场景下有用？
+      placeholder: 描述该技术及其典型使用场景
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: 使用场景
+      description: 你会如何在竞赛或项目中使用它？
+      placeholder: 描述一个该技能可以发挥作用的具体场景
+
+  - type: input
+    id: kaggle-link
+    attributes:
+      label: Kaggle 竞赛 / Notebook 链接
+      description: 使用了该技术的 Kaggle notebook 或竞赛链接（可选）
+      placeholder: https://www.kaggle.com/...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 补充信息
+      description: 相关论文、参考资料或代码示例
