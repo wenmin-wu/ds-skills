@@ -30,6 +30,7 @@ kaggle-llm-science-exam
 llm-detect-ai-generated-text
 map-charting-student-math-misunderstandings
 nbme-score-clinical-patient-notes
+neurips-open-polymer-prediction-2025
 nfl-big-data-bowl-2020
 otto-recommender-system
 playground-series-s6e3
