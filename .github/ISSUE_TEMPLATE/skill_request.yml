@@ -1,0 +1,56 @@
+name: Skill Request
+description: Request a new data science skill to be added
+labels: ["skill-request"]
+body:
+  - type: input
+    id: skill-name
+    attributes:
+      label: Skill Name
+      description: A short name for the technique (e.g. "gradient-checkpointing", "deberta-v3-finetuning")
+      placeholder: e.g. stochastic-weight-averaging
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      description: Which domain does this skill belong to?
+      options:
+        - tabular
+        - nlp
+        - cv
+        - timeseries
+        - llm
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this technique do? When is it useful?
+      placeholder: Describe the technique and its typical use case
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: How would you use this in a competition or project?
+      placeholder: Describe a concrete scenario where this skill would help
+
+  - type: input
+    id: kaggle-link
+    attributes:
+      label: Kaggle Competition / Notebook Link
+      description: Link to a Kaggle notebook or competition where this technique was used (optional)
+      placeholder: https://www.kaggle.com/...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any references, papers, or code examples
