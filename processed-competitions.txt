@@ -2,6 +2,7 @@ AI4Code
 PLAsTiCC-2018
 ai-village-capture-the-flag-defcon31
 amex-default-prediction
+aptos2019-blindness-detection
 ariel-data-challenge-2024
 ariel-data-challenge-2025
 bms-molecular-translation
