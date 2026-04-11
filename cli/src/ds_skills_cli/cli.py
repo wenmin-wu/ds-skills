@@ -185,7 +185,7 @@ def cmd_install(client: Client, args: argparse.Namespace) -> int:
     if args.skill:
         parts = args.skill.split("/", 1)
         if len(parts) != 2:
-            log(f"Error: skill must be domain/slug (e.g. nlp/deberta-classification), got: {args.skill}", file=sys.stderr)
+            log(f"Error: skill must be domain/slug (e.g. nlp/deberta-classification), got: {args.skill}")
             return 1
         domain, slug = parts
         log(f"Installing {args.skill} to {dest} (agent: {args.agent})")

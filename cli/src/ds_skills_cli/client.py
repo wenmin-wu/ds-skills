@@ -12,6 +12,7 @@ from urllib.request import Request, urlopen
 
 _DEFAULT_BASE_URL = "https://ds-skills.com"
 _TIMEOUT = 30
+_USER_AGENT = "ds-skills-cli/0.1.0"
 
 
 class ApiError(Exception):
@@ -37,7 +38,7 @@ class Client:
             params = {k: v for k, v in params.items() if v is not None}
             if params:
                 url += "?" + urlencode(params)
-        req = Request(url, headers={"Accept": "application/json"})
+        req = Request(url, headers={"Accept": "application/json", "User-Agent": _USER_AGENT})
         try:
             with urlopen(req, timeout=_TIMEOUT) as resp:
                 return json.loads(resp.read())
@@ -60,6 +61,7 @@ class Client:
             headers={
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+                "User-Agent": _USER_AGENT,
             },
             method="POST",
         )
@@ -78,7 +80,7 @@ class Client:
 
     def _get_bytes(self, path: str) -> bytes:
         url = f"{self.base_url}/api{path}"
-        req = Request(url, headers={"Accept": "application/zip"})
+        req = Request(url, headers={"Accept": "application/zip", "User-Agent": _USER_AGENT})
         try:
             with urlopen(req, timeout=60) as resp:
                 return resp.read()
