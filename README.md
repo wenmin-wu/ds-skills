@@ -24,34 +24,33 @@ Full list: run `ds-skills list` or browse [ds-skills.com](https://ds-skills.com)
 
 ## Install skills to your agent
 
-### Option 1: ds-skills CLI (recommended)
+### Option 1: Let your AI agent do it
 
-Install the CLI and pull skills from the [ds-skills hub](https://ds-skills.com):
+Copy this repo URL into your AI coding agent (Claude Code, Cursor, Codex, etc.) and ask it to install ds-skills:
+
+```
+https://github.com/wenmin-wu/ds-skills
+```
+
+Your agent can read the README, install the CLI, and set everything up by itself.
+
+### Option 2: ds-skills CLI
 
 ```bash
 pip install ds-skills-cli
-
-# Install all skills
 ds-skills install --agent claude-code   # or: cursor, codex
-
-# Install a single skill
-ds-skills install nlp/deberta-classification --agent claude-code
-
-# Install all skills from a domain
-ds-skills install --agent claude-code --domain tabular
-
-# Teach your agent how to use ds-skills
-ds-skills setup --agent claude-code
+ds-skills setup --agent claude-code     # teach your agent the CLI
 ```
 
-Other useful commands:
+More commands:
 
 ```bash
-ds-skills list                          # List all skills
-ds-skills search "gradient boosting"    # Search by keyword
-ds-skills show nlp/deberta-classification  # Preview a skill
-ds-skills stats                         # Show aggregate stats
-ds-skills feedback nlp/deberta-classification --outcome success  # Report results
+ds-skills install nlp/deberta-classification --agent claude-code  # single skill
+ds-skills install --agent claude-code --domain tabular            # single domain
+ds-skills list                          # list all skills
+ds-skills search "gradient boosting"    # search by keyword
+ds-skills show nlp/deberta-classification  # preview a skill
+ds-skills stats                         # aggregate stats
 ```
 
 Add `--json` to any command for structured JSON output (agent-friendly).

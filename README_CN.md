@@ -24,34 +24,33 @@
 
 ## 安装技能到你的 AI 助手
 
-### 方式一：ds-skills CLI（推荐）
+### 方式一：让你的 AI 助手来安装
 
-安装 CLI，从 [ds-skills hub](https://ds-skills.com) 拉取技能：
+将本仓库链接复制给你的 AI 编程助手（Claude Code、Cursor、Codex 等），让它自行安装：
+
+```
+https://github.com/wenmin-wu/ds-skills
+```
+
+你的 AI 助手会读取 README，安装 CLI，并自动完成配置。
+
+### 方式二：ds-skills CLI
 
 ```bash
 pip install ds-skills-cli
-
-# 安装所有技能
 ds-skills install --agent claude-code   # 或: cursor, codex
-
-# 安装单个技能
-ds-skills install nlp/deberta-classification --agent claude-code
-
-# 安装某个领域的所有技能
-ds-skills install --agent claude-code --domain tabular
-
-# 让你的 Agent 学会使用 ds-skills
-ds-skills setup --agent claude-code
+ds-skills setup --agent claude-code     # 让你的 Agent 学会使用 CLI
 ```
 
-其他常用命令：
+更多命令：
 
 ```bash
+ds-skills install nlp/deberta-classification --agent claude-code  # 安装单个技能
+ds-skills install --agent claude-code --domain tabular            # 安装某领域
 ds-skills list                          # 列出所有技能
 ds-skills search "gradient boosting"    # 按关键词搜索
 ds-skills show nlp/deberta-classification  # 预览技能内容
 ds-skills stats                         # 查看统计信息
-ds-skills feedback nlp/deberta-classification --outcome success  # 反馈使用结果
 ```
 
 所有命令均支持 `--json` 参数输出结构化 JSON（Agent 友好）。
