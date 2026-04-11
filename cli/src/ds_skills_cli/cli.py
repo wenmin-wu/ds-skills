@@ -67,6 +67,7 @@ def _build_parser() -> argparse.ArgumentParser:
 
     # --- install ---
     ins = sub.add_parser("install", help="Install skills to an AI agent's skill directory", parents=[common])
+    ins.add_argument("skill", nargs="?", default=None, help="Optional domain/slug to install a single skill (e.g. nlp/deberta-classification)")
     ins.add_argument(
         "--agent",
         "-a",
@@ -179,6 +180,23 @@ def cmd_pull(client: Client, args: argparse.Namespace) -> int:
 
 def cmd_install(client: Client, args: argparse.Namespace) -> int:
     dest = args.dest or AGENT_DIRS[args.agent]
+
+    # Single skill: ds-skills install nlp/deberta-classification --agent claude-code
+    if args.skill:
+        parts = args.skill.split("/", 1)
+        if len(parts) != 2:
+            log(f"Error: skill must be domain/slug (e.g. nlp/deberta-classification), got: {args.skill}", file=sys.stderr)
+            return 1
+        domain, slug = parts
+        log(f"Installing {args.skill} to {dest} (agent: {args.agent})")
+        files = client.pull_skill(domain, slug, dest)
+        if args.json:
+            emit_json({"agent": args.agent, "dest": str(dest), "skill": args.skill, "files": files, "count": len(files)})
+        else:
+            log(f"Done. {len(files)} files installed to {dest}")
+        return 0
+
+    # Domain or all skills
     log(f"Installing skills to {dest} (agent: {args.agent})")
 
     if args.domain:
