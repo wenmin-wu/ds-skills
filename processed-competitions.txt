@@ -22,6 +22,7 @@ feedback-prize-english-language-learning
 foursquare-location-matching
 google-quest-challenge
 h-and-m-personalized-fashion-recommendations
+home-credit-default-risk
 hpa-single-cell-image-classification
 jigsaw-multilingual-toxic-comment-classification
 jigsaw-unintended-bias-in-toxicity-classification
