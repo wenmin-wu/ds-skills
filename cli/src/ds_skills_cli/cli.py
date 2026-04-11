@@ -98,6 +98,22 @@ def _build_parser() -> argparse.ArgumentParser:
     fb.add_argument("--traces", help="Error traces summary (PII removed)")
     fb.add_argument("--username", help="Override configured username")
 
+    # --- setup ---
+    su = sub.add_parser("setup", help="Install ds-skills SKILL.md into an AI agent's skill directory", parents=[common])
+    su.add_argument(
+        "--agent",
+        "-a",
+        required=True,
+        choices=list(AGENT_DIRS.keys()),
+        help="Target agent (claude-code, cursor, codex)",
+    )
+    su.add_argument(
+        "--dest",
+        type=Path,
+        default=None,
+        help="Override default agent directory",
+    )
+
     # --- config ---
     cfg = sub.add_parser("config", help="Get or set CLI configuration", parents=[common])
     cfg.add_argument("key", nargs="?", help="Config key (e.g. username, hub_url)")
@@ -259,6 +275,96 @@ def cmd_feedback(client: Client, args: argparse.Namespace) -> int:
     return 0
 
 
+_SKILL_MD = """\
+---
+name: ds-skills
+description: >
+  Browse, search, and install data science skills distilled from top Kaggle notebooks.
+  Use the ds-skills CLI to find and load reusable techniques into your project.
+---
+
+# ds-skills CLI
+
+Agent-friendly CLI to browse, search, and install data science skills from [ds-skills.com](https://ds-skills.com).
+
+## Quick Reference
+
+```bash
+# List all skills
+ds-skills list
+ds-skills list --domain nlp
+
+# Search skills by keyword
+ds-skills search "gradient boosting"
+ds-skills search "augmentation" --domain cv
+
+# Show full skill content
+ds-skills show nlp/deberta-classification
+
+# Install all skills for this agent
+ds-skills install --agent {agent}
+
+# Install a single skill
+ds-skills install nlp/deberta-classification --agent {agent}
+
+# Install all skills from a domain
+ds-skills install --agent {agent} --domain tabular
+
+# Pull skill files to a custom directory
+ds-skills pull nlp/deberta-classification --dest ./skills
+
+# Show aggregate statistics
+ds-skills stats
+
+# Submit feedback
+ds-skills feedback nlp/deberta-classification --outcome success
+```
+
+## Workflow
+
+1. **Discover**: `ds-skills search "<topic>"` or `ds-skills list --domain <domain>` to find relevant skills
+2. **Preview**: `ds-skills show <domain>/<slug>` to read the full skill content
+3. **Install**: `ds-skills install <domain>/<slug> --agent {agent}` to load the skill
+4. **Apply**: Follow the skill's Quick Start and Workflow sections to apply the technique
+5. **Feedback**: `ds-skills feedback <domain>/<slug> --outcome success` to report results
+
+## Domains
+
+- **tabular**: Feature engineering, gradient boosting, validation strategies
+- **nlp**: Transformer fine-tuning, text classification, NER, QA
+- **cv**: Image classification, object detection, segmentation, metric learning
+- **timeseries**: Forecasting, anomaly detection, signal processing
+- **llm**: RAG, prompt engineering, inference optimization
+
+## JSON Mode
+
+Add `--json` to any command for structured JSON output (agent-friendly):
+
+```bash
+ds-skills list --json
+ds-skills search "ensemble" --json
+ds-skills stats --json
+```
+"""
+
+
+def cmd_setup(client: Client, args: argparse.Namespace) -> int:
+    dest = args.dest or AGENT_DIRS[args.agent]
+    skill_dir = dest / "ds-skills-cli"
+    skill_dir.mkdir(parents=True, exist_ok=True)
+
+    content = _SKILL_MD.replace("{agent}", args.agent)
+    skill_file = skill_dir / "SKILL.md"
+    skill_file.write_text(content, encoding="utf-8")
+
+    if args.json:
+        emit_json({"agent": args.agent, "dest": str(dest), "file": str(skill_file)})
+    else:
+        log(f"Installed ds-skills SKILL.md to {skill_file}")
+        log(f"Your {args.agent} agent now knows how to use ds-skills CLI.")
+    return 0
+
+
 def cmd_config(client: Client, args: argparse.Namespace) -> int:
     from ds_skills_cli import config
 
@@ -301,6 +407,7 @@ _DISPATCH = {
     "show": cmd_show,
     "pull": cmd_pull,
     "install": cmd_install,
+    "setup": cmd_setup,
     "stats": cmd_stats,
     "feedback": cmd_feedback,
     "config": cmd_config,
@@ -315,9 +422,12 @@ def main(argv: list[str] | None = None) -> None:
         parser.print_help(sys.stderr)
         sys.exit(3)
 
-    # Config command doesn't need a client
+    # Commands that don't need a client
     if args.command == "config":
         code = cmd_config(None, args)  # type: ignore[arg-type]
+        sys.exit(code)
+    if args.command == "setup":
+        code = cmd_setup(None, args)  # type: ignore[arg-type]
         sys.exit(code)
 
     from ds_skills_cli import config

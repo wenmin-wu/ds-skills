@@ -12,7 +12,7 @@ from urllib.request import Request, urlopen
 
 _DEFAULT_BASE_URL = "https://ds-skills.com"
 _TIMEOUT = 30
-_USER_AGENT = "ds-skills-cli/0.2.0"
+_USER_AGENT = "ds-skills-cli/0.3.0"
 
 
 class ApiError(Exception):

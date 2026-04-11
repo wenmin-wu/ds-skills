@@ -20,36 +20,55 @@ Data Science Skills Distilled from Awesome Kaggle Notebooks.
 | **timeseries** | 32 | detector-calibration-pipeline, gaussian-log-likelihood-metric, gradient-transit-phase-detection, inverse-variance-channel-weighting |
 | **llm** | 12 | wikipedia-rag-retrieval, kv-cache-prefix-scoring, confidence-threshold-fallback |
 
-Full list: run `scripts/skills-list` or browse the [interactive mindmap](graph/skills-map.html).
+Full list: run `ds-skills list` or browse [ds-skills.com](https://ds-skills.com).
 
 ## Install skills to your agent
 
-<details>
-<summary><b>Claude Code</b></summary>
+### Option 1: ds-skills CLI (recommended)
+
+Install the CLI and pull skills from the [ds-skills hub](https://ds-skills.com):
 
 ```bash
-scripts/skills-copy --dest ~/.claude/skills
+pip install ds-skills-cli
+
+# Install all skills
+ds-skills install --agent claude-code   # or: cursor, codex
+
+# Install a single skill
+ds-skills install nlp/deberta-classification --agent claude-code
+
+# Install all skills from a domain
+ds-skills install --agent claude-code --domain tabular
+
+# Teach your agent how to use ds-skills
+ds-skills setup --agent claude-code
 ```
 
-</details>
-
-<details>
-<summary><b>Cursor</b></summary>
+Other useful commands:
 
 ```bash
-scripts/skills-copy --dest ~/.cursor/rules
+ds-skills list                          # List all skills
+ds-skills search "gradient boosting"    # Search by keyword
+ds-skills show nlp/deberta-classification  # Preview a skill
+ds-skills stats                         # Show aggregate stats
+ds-skills feedback nlp/deberta-classification --outcome success  # Report results
 ```
 
-</details>
+Add `--json` to any command for structured JSON output (agent-friendly).
 
-<details>
-<summary><b>Codex</b></summary>
+### Option 2: Local copy script
+
+If you prefer to clone the repo and copy skills locally:
 
 ```bash
-scripts/skills-copy --dest ~/.codex/skills
-```
+git clone https://github.com/wenmin-wu/ds-skills.git
+cd ds-skills
 
-</details>
+# Copy to your agent's skill directory
+scripts/skills-copy --dest ~/.claude/skills    # Claude Code
+scripts/skills-copy --dest ~/.cursor/rules     # Cursor
+scripts/skills-copy --dest ~/.codex/skills     # Codex
+```
 
 Skills are flattened on copy: `skills/nlp/deberta-classification/` becomes `nlp-deberta-classification/`.
 

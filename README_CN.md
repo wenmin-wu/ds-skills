@@ -20,36 +20,55 @@
 | **timeseries** (时间序列) | 32 | detector-calibration-pipeline, gaussian-log-likelihood-metric, gradient-transit-phase-detection, inverse-variance-channel-weighting |
 | **llm** (大语言模型) | 12 | wikipedia-rag-retrieval, kv-cache-prefix-scoring, confidence-threshold-fallback |
 
-完整列表：运行 `scripts/skills-list` 或浏览[交互式技能图谱](graph/skills-map.html)。
+完整列表：运行 `ds-skills list` 或浏览 [ds-skills.com](https://ds-skills.com)。
 
 ## 安装技能到你的 AI 助手
 
-<details>
-<summary><b>Claude Code</b></summary>
+### 方式一：ds-skills CLI（推荐）
+
+安装 CLI，从 [ds-skills hub](https://ds-skills.com) 拉取技能：
 
 ```bash
-scripts/skills-copy --dest ~/.claude/skills
+pip install ds-skills-cli
+
+# 安装所有技能
+ds-skills install --agent claude-code   # 或: cursor, codex
+
+# 安装单个技能
+ds-skills install nlp/deberta-classification --agent claude-code
+
+# 安装某个领域的所有技能
+ds-skills install --agent claude-code --domain tabular
+
+# 让你的 Agent 学会使用 ds-skills
+ds-skills setup --agent claude-code
 ```
 
-</details>
-
-<details>
-<summary><b>Cursor</b></summary>
+其他常用命令：
 
 ```bash
-scripts/skills-copy --dest ~/.cursor/rules
+ds-skills list                          # 列出所有技能
+ds-skills search "gradient boosting"    # 按关键词搜索
+ds-skills show nlp/deberta-classification  # 预览技能内容
+ds-skills stats                         # 查看统计信息
+ds-skills feedback nlp/deberta-classification --outcome success  # 反馈使用结果
 ```
 
-</details>
+所有命令均支持 `--json` 参数输出结构化 JSON（Agent 友好）。
 
-<details>
-<summary><b>Codex</b></summary>
+### 方式二：本地脚本复制
+
+如果你更喜欢克隆仓库并本地复制：
 
 ```bash
-scripts/skills-copy --dest ~/.codex/skills
-```
+git clone https://github.com/wenmin-wu/ds-skills.git
+cd ds-skills
 
-</details>
+# 复制到 Agent 的技能目录
+scripts/skills-copy --dest ~/.claude/skills    # Claude Code
+scripts/skills-copy --dest ~/.cursor/rules     # Cursor
+scripts/skills-copy --dest ~/.codex/skills     # Codex
+```
 
 复制时自动扁平化：`skills/nlp/deberta-classification/` 变为 `nlp-deberta-classification/`。
 
