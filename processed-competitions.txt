@@ -40,5 +40,6 @@ rsna-2022-cervical-spine-fracture-detection
 santander-customer-transaction-prediction
 shopee-product-matching
 siim-covid19-detection
+talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
 tweet-sentiment-extraction
