@@ -46,3 +46,4 @@ talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
 tweet-sentiment-extraction
 uspto-explainable-ai
+vinbigdata-chest-xray-abnormalities-detection
