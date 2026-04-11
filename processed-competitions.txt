@@ -40,6 +40,7 @@ rsna-2022-cervical-spine-fracture-detection
 rsna-2024-lumbar-spine-degenerative-classification
 rsna-breast-cancer-detection
 santander-customer-transaction-prediction
+severstal-steel-defect-detection
 shopee-product-matching
 siim-covid19-detection
 talkingdata-adtracking-fraud-detection
