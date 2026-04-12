@@ -51,6 +51,7 @@ rsna-intracranial-hemorrhage-detection
 santander-customer-transaction-prediction
 severstal-steel-defect-detection
 shopee-product-matching
+siim-acr-pneumothorax-segmentation
 siim-covid19-detection
 talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
