@@ -27,6 +27,7 @@ home-credit-default-risk
 hpa-single-cell-image-classification
 icr-identify-age-related-conditions
 jigsaw-multilingual-toxic-comment-classification
+jigsaw-toxic-severity-rating
 jigsaw-unintended-bias-in-toxicity-classification
 kaggle-llm-science-exam
 llm-detect-ai-generated-text
