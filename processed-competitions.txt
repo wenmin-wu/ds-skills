@@ -34,6 +34,7 @@ linking-writing-processes-to-writing-quality
 llm-detect-ai-generated-text
 llms-you-cant-please-them-all
 lux-ai-2021
+lyft-motion-prediction-autonomous-vehicles
 map-charting-student-math-misunderstandings
 nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
