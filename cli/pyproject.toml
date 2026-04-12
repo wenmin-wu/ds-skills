@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ds-skills-cli"
-version = "0.3.0"
+version = "0.4.0"
 description = "Agent-friendly CLI to browse, search, and pull data science skills from ds-skills.com"
 readme = "README.md"
 license = "MIT"
