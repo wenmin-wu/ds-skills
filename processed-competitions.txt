@@ -31,6 +31,7 @@ jigsaw-toxic-severity-rating
 jigsaw-unintended-bias-in-toxicity-classification
 kaggle-llm-science-exam
 llm-detect-ai-generated-text
+lux-ai-2021
 map-charting-student-math-misunderstandings
 nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
@@ -46,6 +47,7 @@ riiid-test-answer-prediction
 rsna-2022-cervical-spine-fracture-detection
 rsna-2024-lumbar-spine-degenerative-classification
 rsna-breast-cancer-detection
+rsna-intracranial-hemorrhage-detection
 santander-customer-transaction-prediction
 severstal-steel-defect-detection
 shopee-product-matching
