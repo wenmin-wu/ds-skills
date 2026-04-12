@@ -6,7 +6,7 @@
 
 从优秀 Kaggle Notebook 中提炼的数据科学技能库。
 
-320 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
+325 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
 
 > 持续更新中 —— 600+ 场竞赛待处理，自动化蒸馏 Agent 定期提取新技能。Star 本仓库以获取最新动态。
 
@@ -18,7 +18,7 @@
 | **nlp** (自然语言处理) | 107 | deberta-classification, layerwise-lr-decay, sentiment-conditioned-qa-span, last-hidden-states-concat |
 | **cv** (计算机视觉) | 82 | arcface-metric-learning, chunked-gpu-similarity-search, dicom-hounsfield-normalization, knn-distance-threshold-matching |
 | **timeseries** (时间序列) | 32 | detector-calibration-pipeline, gaussian-log-likelihood-metric, gradient-transit-phase-detection, inverse-variance-channel-weighting |
-| **llm** (大语言模型) | 16 | wikipedia-rag-retrieval, kv-cache-prefix-scoring, confidence-threshold-fallback |
+| **llm** (大语言模型) | 21 | wikipedia-rag-retrieval, kv-cache-prefix-scoring, counting-trap-adversarial-essay, weighted-attack-strategy-sampling |
 
 完整列表：运行 `ds-skills list` 或浏览 [ds-skills.com](https://ds-skills.com)。查看[更新日志](CHANGELOG.md)了解最新动态。
 
@@ -96,7 +96,7 @@ skills/<领域>/<技巧名>/SKILL.md
 
 每个技能均从 [Kaggle](https://www.kaggle.com) 高票 Notebook 中提炼。每个 SKILL.md 的参考部分链接到原始 Notebook。
 
-已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配、NFL 大数据碗、Jigsaw 毒性分类偏差检测、MAP 学生数学误解图谱、OTTO 多目标推荐系统、American Express 信用违约预测、Tweet 情感提取、PLAsTiCC 天文分类、NeurIPS Ariel 数据挑战赛 2025、CZII 冷冻电子断层扫描粒子识别、Eedi 数学误解挖掘、Feedback Prize 论证效果预测、Coleridge Initiative 数据集识别挑战、BMS 分子翻译、Jigsaw 多语言毒性评论分类、Santander 客户交易预测、Quora 问题配对、Google AI4Code 代码理解、RSNA 2022 颈椎骨折检测、Foursquare 地点匹配、Feedback Prize 学生写作评估、TensorFlow 2.0 问答、APTOS 2019 眼底病变检测、Home Credit 信用违约风险、TalkingData 广告追踪欺诈检测、RSNA 2024 腰椎退行性病变分类、USPTO 专利可解释 AI、RSNA 乳腺癌筛查检测、VinBigData 胸部X光异常检测、Severstal 钢材缺陷检测、NeurIPS 开放聚合物预测 2025、Drawing with LLMs、PII 数据检测、ICR 年龄相关疾病识别、Open Problems 多模态单细胞整合、Jigsaw 毒性评论严重性评级、PANDA 前列腺癌分级评估、RSNA 颅内出血检测、SIIM-ACR 气胸分割、Quora 不良问题分类。
+已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配、NFL 大数据碗、Jigsaw 毒性分类偏差检测、MAP 学生数学误解图谱、OTTO 多目标推荐系统、American Express 信用违约预测、Tweet 情感提取、PLAsTiCC 天文分类、NeurIPS Ariel 数据挑战赛 2025、CZII 冷冻电子断层扫描粒子识别、Eedi 数学误解挖掘、Feedback Prize 论证效果预测、Coleridge Initiative 数据集识别挑战、BMS 分子翻译、Jigsaw 多语言毒性评论分类、Santander 客户交易预测、Quora 问题配对、Google AI4Code 代码理解、RSNA 2022 颈椎骨折检测、Foursquare 地点匹配、Feedback Prize 学生写作评估、TensorFlow 2.0 问答、APTOS 2019 眼底病变检测、Home Credit 信用违约风险、TalkingData 广告追踪欺诈检测、RSNA 2024 腰椎退行性病变分类、USPTO 专利可解释 AI、RSNA 乳腺癌筛查检测、VinBigData 胸部X光异常检测、Severstal 钢材缺陷检测、NeurIPS 开放聚合物预测 2025、Drawing with LLMs、PII 数据检测、ICR 年龄相关疾病识别、Open Problems 多模态单细胞整合、Jigsaw 毒性评论严重性评级、PANDA 前列腺癌分级评估、RSNA 颅内出血检测、SIIM-ACR 气胸分割、Quora 不良问题分类、LLMs - You Can't Please Them All。
 
 ## 许可
 

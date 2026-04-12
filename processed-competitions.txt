@@ -31,6 +31,7 @@ jigsaw-toxic-severity-rating
 jigsaw-unintended-bias-in-toxicity-classification
 kaggle-llm-science-exam
 llm-detect-ai-generated-text
+llms-you-cant-please-them-all
 lux-ai-2021
 map-charting-student-math-misunderstandings
 nbme-score-clinical-patient-notes
