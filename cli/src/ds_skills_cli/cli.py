@@ -287,6 +287,12 @@ description: >
 
 Agent-friendly CLI to browse, search, and install data science skills from [ds-skills.com](https://ds-skills.com).
 
+## IMPORTANT: How to call ds-skills
+
+- `ds-skills` is a globally installed CLI. Call it directly — do NOT `cd` to any directory first.
+- Do NOT use `||` fallback chains (e.g. `ds-skills search "x" || npx ds-skills ...`). The CLI is pip-installed, not an npm package.
+- Do NOT use `npx`, `npm exec`, or any Node.js runner. This is a Python CLI: `pip install ds-skills-cli`.
+
 ## Quick Reference
 
 ```bash
@@ -432,6 +438,7 @@ def main(argv: list[str] | None = None) -> None:
 
     from ds_skills_cli import config
     client = Client(base_url=config.get_hub_url())
+    client.record_visit(config.get_client_id())
 
     try:
         code = _DISPATCH[args.command](client, args)

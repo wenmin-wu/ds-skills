@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import uuid
 from pathlib import Path
 
 CONFIG_DIR = Path.home() / ".ds-skills"
@@ -48,3 +49,14 @@ def set_value(key: str, value: str) -> None:
 def get_hub_url() -> str:
     """Return the hub base URL (used by Client)."""
     return get("hub_url") or _DEFAULTS["hub_url"]
+
+
+def get_client_id() -> str:
+    """Return a stable client UUID, auto-generated on first use."""
+    data = _load()
+    cid = data.get("client_id")
+    if not cid:
+        cid = str(uuid.uuid4())
+        data["client_id"] = cid
+        _save(data)
+    return cid

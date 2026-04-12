@@ -12,7 +12,8 @@ from urllib.request import Request, urlopen
 
 _DEFAULT_BASE_URL = "https://ds-skills.com"
 _TIMEOUT = 30
-_USER_AGENT = "ds-skills-cli/0.3.0"
+from ds_skills_cli import __version__
+_USER_AGENT = f"ds-skills-cli/{__version__}"
 
 
 class ApiError(Exception):
@@ -93,6 +94,13 @@ class Client:
             raise ApiError(exc.code, detail) from None
         except URLError as exc:
             raise ApiError(0, f"Connection failed: {exc.reason}") from None
+
+    def record_visit(self, client_id: str) -> dict | None:
+        """POST /api/visit — fire-and-forget visitor registration."""
+        try:
+            return self._post_json("/visit", {"client_id": client_id, "source": "cli"})
+        except Exception:
+            return None
 
     # -- public API ---------------------------------------------------------
 
