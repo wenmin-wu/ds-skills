@@ -5,6 +5,7 @@ amex-default-prediction
 aptos2019-blindness-detection
 ariel-data-challenge-2024
 ariel-data-challenge-2025
+avito-demand-prediction
 bms-molecular-translation
 champs-scalar-coupling
 child-mind-institute-detect-sleep-states
