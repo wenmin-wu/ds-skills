@@ -28,6 +28,7 @@ google-quest-challenge
 h-and-m-personalized-fashion-recommendations
 home-credit-default-risk
 hpa-single-cell-image-classification
+human-protein-atlas-image-classification
 icr-identify-age-related-conditions
 jigsaw-agile-community-rules
 jigsaw-multilingual-toxic-comment-classification
