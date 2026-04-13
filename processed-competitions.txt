@@ -61,6 +61,7 @@ rsna-2022-cervical-spine-fracture-detection
 rsna-2023-abdominal-trauma-detection
 rsna-2024-lumbar-spine-degenerative-classification
 rsna-breast-cancer-detection
+rsna-intracranial-aneurysm-detection
 rsna-intracranial-hemorrhage-detection
 rsna-str-pulmonary-embolism-detection
 santander-customer-transaction-prediction
