@@ -58,6 +58,7 @@ severstal-steel-defect-detection
 shopee-product-matching
 siim-acr-pneumothorax-segmentation
 siim-covid19-detection
+siim-isic-melanoma-classification
 talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
 tweet-sentiment-extraction
