@@ -42,6 +42,7 @@ nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
 nfl-big-data-bowl-2020
 nfl-health-and-safety-helmet-assignment
+noaa-fisheries-steller-sea-lion-population-count
 open-problems-multimodal
 otto-recommender-system
 pii-detection-removal-from-educational-data
