@@ -18,6 +18,7 @@ data-science-bowl-2019
 deep-past-initiative-machine-translation
 drawing-with-llms
 eedi-mining-misconceptions-in-mathematics
+elo-merchant-category-recommendation
 favorita-grocery-sales-forecasting
 feedback-prize-2021
 feedback-prize-effectiveness
