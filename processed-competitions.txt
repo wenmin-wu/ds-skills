@@ -54,6 +54,7 @@ quora-question-pairs
 ranzcr-clip-catheter-line-classification
 riiid-test-answer-prediction
 rsna-2022-cervical-spine-fracture-detection
+rsna-2023-abdominal-trauma-detection
 rsna-2024-lumbar-spine-degenerative-classification
 rsna-breast-cancer-detection
 rsna-intracranial-hemorrhage-detection
