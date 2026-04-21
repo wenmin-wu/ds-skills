@@ -36,6 +36,7 @@ jigsaw-multilingual-toxic-comment-classification
 jigsaw-toxic-severity-rating
 jigsaw-unintended-bias-in-toxicity-classification
 kaggle-llm-science-exam
+learning-equality-curriculum-recommendations
 linking-writing-processes-to-writing-quality
 llm-detect-ai-generated-text
 llms-you-cant-please-them-all
