@@ -9,6 +9,7 @@ avito-demand-prediction
 bms-molecular-translation
 champs-scalar-coupling
 child-mind-institute-detect-sleep-states
+child-mind-institute-problematic-internet-use
 cmi-detect-behavior-with-sensor-data
 coleridgeinitiative-show-us-the-data
 commonlit-evaluate-student-summaries
