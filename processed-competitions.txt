@@ -29,6 +29,7 @@ feedback-prize-english-language-learning
 foursquare-location-matching
 google-quest-challenge
 h-and-m-personalized-fashion-recommendations
+halite
 home-credit-default-risk
 hpa-single-cell-image-classification
 human-protein-atlas-image-classification
