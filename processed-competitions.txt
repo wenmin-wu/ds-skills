@@ -49,6 +49,7 @@ llms-you-cant-please-them-all
 lux-ai-2021
 lyft-motion-prediction-autonomous-vehicles
 m5-forecasting-accuracy
+m5-forecasting-uncertainty
 map-charting-student-math-misunderstandings
 nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
