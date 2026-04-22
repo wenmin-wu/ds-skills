@@ -20,6 +20,7 @@ czii-cryo-et-object-identification
 data-science-bowl-2019
 deep-past-initiative-machine-translation
 drawing-with-llms
+dstl-satellite-imagery-feature-detection
 eedi-mining-misconceptions-in-mathematics
 elo-merchant-category-recommendation
 favorita-grocery-sales-forecasting
