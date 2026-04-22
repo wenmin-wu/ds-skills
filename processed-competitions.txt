@@ -75,5 +75,6 @@ siim-isic-melanoma-classification
 talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
 tweet-sentiment-extraction
+us-patent-phrase-to-phrase-matching
 uspto-explainable-ai
 vinbigdata-chest-xray-abnormalities-detection
