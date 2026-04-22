@@ -28,6 +28,7 @@ feedback-prize-2021
 feedback-prize-effectiveness
 feedback-prize-english-language-learning
 foursquare-location-matching
+godaddy-microbusiness-density-forecasting
 google-quest-challenge
 h-and-m-personalized-fashion-recommendations
 halite
