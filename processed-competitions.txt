@@ -1,5 +1,6 @@
 AI4Code
 PLAsTiCC-2018
+ai-mathematical-olympiad-progress-prize-2
 ai-village-capture-the-flag-defcon31
 amex-default-prediction
 aptos2019-blindness-detection
