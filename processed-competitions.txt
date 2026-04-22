@@ -84,4 +84,5 @@ tgs-salt-identification-challenge
 tweet-sentiment-extraction
 us-patent-phrase-to-phrase-matching
 uspto-explainable-ai
+vesuvius-challenge-ink-detection
 vinbigdata-chest-xray-abnormalities-detection

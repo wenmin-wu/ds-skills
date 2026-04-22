@@ -6,7 +6,7 @@
 
 从优秀 Kaggle Notebook 中提炼的数据科学技能库。
 
-450 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
+455 个可复用技巧，覆盖 5 大领域，均从高票 Kaggle 竞赛方案中提取。每个技能是一个独立的 SKILL.md —— 可直接被 Claude Code、Cursor、Codex 或任何 AI 编程助手加载使用。
 
 > 持续更新中 —— 600+ 场竞赛待处理，自动化蒸馏 Agent 定期提取新技能。Star 本仓库以获取最新动态。
 
@@ -16,7 +16,7 @@
 |------|------|------|
 | **tabular** (表格数据) | 103 | iterative-pseudo-label-refinement, per-partition-variance-filtering, regularized-qda-classifier, transductive-train-test-transform |
 | **nlp** (自然语言处理) | 118 | taxonomy-context-enrichment, learned-attention-pooling, domain-special-token-embedding, anchor-grouped-validation |
-| **cv** (计算机视觉) | 145 | structured-gt-serialization-tokens, tensor-core-aligned-padding, sigmoid-normalized-rmse, generative-output-numeric-cleaning |
+| **cv** (计算机视觉) | 150 | prediction-map-stitching-averaging, 3d-encoder-2d-decoder-segmentation, rotation-tta-segmentation, center-z-slice-selection |
 | **timeseries** (时间序列) | 48 | recursive-multistep-forecasting, tweedie-objective-zero-inflated, wavelet-denoising, snap-event-interaction-features |
 | **llm** (大语言模型) | 36 | binary-search-entity-narrowing, dual-role-agent-dispatch, answer-accumulation-filter, binary-answer-clamping |
 
@@ -96,7 +96,7 @@ skills/<领域>/<技巧名>/SKILL.md
 
 每个技能均从 [Kaggle](https://www.kaggle.com) 高票 Notebook 中提炼。每个 SKILL.md 的参考部分链接到原始 Notebook。
 
-已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配、NFL 大数据碗、Jigsaw 毒性分类偏差检测、MAP 学生数学误解图谱、OTTO 多目标推荐系统、American Express 信用违约预测、Tweet 情感提取、PLAsTiCC 天文分类、NeurIPS Ariel 数据挑战赛 2025、CZII 冷冻电子断层扫描粒子识别、Eedi 数学误解挖掘、Feedback Prize 论证效果预测、Coleridge Initiative 数据集识别挑战、BMS 分子翻译、Jigsaw 多语言毒性评论分类、Santander 客户交易预测、Quora 问题配对、Google AI4Code 代码理解、RSNA 2022 颈椎骨折检测、Foursquare 地点匹配、Feedback Prize 学生写作评估、TensorFlow 2.0 问答、APTOS 2019 眼底病变检测、Home Credit 信用违约风险、TalkingData 广告追踪欺诈检测、RSNA 2024 腰椎退行性病变分类、USPTO 专利可解释 AI、RSNA 乳腺癌筛查检测、VinBigData 胸部X光异常检测、Severstal 钢材缺陷检测、NeurIPS 开放聚合物预测 2025、Drawing with LLMs、PII 数据检测、ICR 年龄相关疾病识别、Open Problems 多模态单细胞整合、Jigsaw 毒性评论严重性评级、PANDA 前列腺癌分级评估、RSNA 颅内出血检测、SIIM-ACR 气胸分割、Quora 不良问题分类、LLMs - You Can't Please Them All、写作过程关联写作质量、NFL 头盔识别与球员指派、Lyft 自动驾驶运动预测、SIIM-ISIC 黑色素瘤分类、Avito 需求预测挑战赛、Corporación Favorita 杂货销售预测、NOAA 渔业斯特勒海狮种群计数、Jigsaw 敏捷社区规则分类、RSNA 2023 腹部创伤检测、NFL 1st and Future 撞击检测、RSNA STR 肺栓塞检测、M5 销售预测 - 准确度、Elo 商家类别推荐、人类蛋白图谱图像分类、RSNA 颅内动脉瘤检测、儿童心理研究所问题性互联网使用、Learning Equality 课程推荐、美国专利短语匹配、Sartorius 细胞实例分割、Instant Gratification、座头鲸识别、TGS 盐体识别挑战、AI 数学奥林匹克进步奖 2、LLM 20 问、Benetech 图表无障碍化。
+已处理竞赛：Playground Series S6E3、HPA 单细胞分类、Google QUEST 问答、Feedback Prize 英语学习、CommonLit 学生摘要、Kaggle LLM 科学考试、H&M 时尚推荐、CommonLit 可读性、Data Science Bowl 2019、CHAMPS 分子耦合、Child Mind Institute 睡眠检测、LLM 检测 AI 文本、RANZCR CLiP、Riiid 答题预测、NBME 临床笔记评分、Deep Past 阿卡德语翻译、CMI 传感器行为检测、NeurIPS Ariel 数据挑战赛 2024、SIIM-FISABIO-RSNA COVID-19 检测、Shopee 商品匹配、NFL 大数据碗、Jigsaw 毒性分类偏差检测、MAP 学生数学误解图谱、OTTO 多目标推荐系统、American Express 信用违约预测、Tweet 情感提取、PLAsTiCC 天文分类、NeurIPS Ariel 数据挑战赛 2025、CZII 冷冻电子断层扫描粒子识别、Eedi 数学误解挖掘、Feedback Prize 论证效果预测、Coleridge Initiative 数据集识别挑战、BMS 分子翻译、Jigsaw 多语言毒性评论分类、Santander 客户交易预测、Quora 问题配对、Google AI4Code 代码理解、RSNA 2022 颈椎骨折检测、Foursquare 地点匹配、Feedback Prize 学生写作评估、TensorFlow 2.0 问答、APTOS 2019 眼底病变检测、Home Credit 信用违约风险、TalkingData 广告追踪欺诈检测、RSNA 2024 腰椎退行性病变分类、USPTO 专利可解释 AI、RSNA 乳腺癌筛查检测、VinBigData 胸部X光异常检测、Severstal 钢材缺陷检测、NeurIPS 开放聚合物预测 2025、Drawing with LLMs、PII 数据检测、ICR 年龄相关疾病识别、Open Problems 多模态单细胞整合、Jigsaw 毒性评论严重性评级、PANDA 前列腺癌分级评估、RSNA 颅内出血检测、SIIM-ACR 气胸分割、Quora 不良问题分类、LLMs - You Can't Please Them All、写作过程关联写作质量、NFL 头盔识别与球员指派、Lyft 自动驾驶运动预测、SIIM-ISIC 黑色素瘤分类、Avito 需求预测挑战赛、Corporación Favorita 杂货销售预测、NOAA 渔业斯特勒海狮种群计数、Jigsaw 敏捷社区规则分类、RSNA 2023 腹部创伤检测、NFL 1st and Future 撞击检测、RSNA STR 肺栓塞检测、M5 销售预测 - 准确度、Elo 商家类别推荐、人类蛋白图谱图像分类、RSNA 颅内动脉瘤检测、儿童心理研究所问题性互联网使用、Learning Equality 课程推荐、美国专利短语匹配、Sartorius 细胞实例分割、Instant Gratification、座头鲸识别、TGS 盐体识别挑战、AI 数学奥林匹克进步奖 2、LLM 20 问、Benetech 图表无障碍化、维苏威挑战赛墨迹检测。
 
 ## 许可
 
