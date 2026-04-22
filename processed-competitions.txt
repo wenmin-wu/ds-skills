@@ -88,6 +88,7 @@ shopee-product-matching
 siim-acr-pneumothorax-segmentation
 siim-covid19-detection
 siim-isic-melanoma-classification
+stable-diffusion-image-to-prompts
 talkingdata-adtracking-fraud-detection
 tensorflow2-question-answering
 tgs-salt-identification-challenge
