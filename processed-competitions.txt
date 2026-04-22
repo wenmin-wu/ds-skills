@@ -51,6 +51,7 @@ lyft-motion-prediction-autonomous-vehicles
 m5-forecasting-accuracy
 m5-forecasting-uncertainty
 map-charting-student-math-misunderstandings
+mercari-price-suggestion-challenge
 nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
 nfl-big-data-bowl-2020
