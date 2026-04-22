@@ -67,6 +67,7 @@ rsna-intracranial-aneurysm-detection
 rsna-intracranial-hemorrhage-detection
 rsna-str-pulmonary-embolism-detection
 santander-customer-transaction-prediction
+sartorius-cell-instance-segmentation
 severstal-steel-defect-detection
 shopee-product-matching
 siim-acr-pneumothorax-segmentation
