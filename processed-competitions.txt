@@ -56,6 +56,7 @@ m5-forecasting-accuracy
 m5-forecasting-uncertainty
 map-charting-student-math-misunderstandings
 mercari-price-suggestion-challenge
+mlb-player-digital-engagement-forecasting
 nbme-score-clinical-patient-notes
 neurips-open-polymer-prediction-2025
 nfl-big-data-bowl-2020
