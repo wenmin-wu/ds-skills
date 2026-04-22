@@ -29,6 +29,7 @@ feedback-prize-effectiveness
 feedback-prize-english-language-learning
 foursquare-location-matching
 godaddy-microbusiness-density-forecasting
+google-football
 google-quest-challenge
 h-and-m-personalized-fashion-recommendations
 halite
