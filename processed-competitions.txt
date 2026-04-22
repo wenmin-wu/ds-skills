@@ -31,6 +31,7 @@ home-credit-default-risk
 hpa-single-cell-image-classification
 human-protein-atlas-image-classification
 icr-identify-age-related-conditions
+instant-gratification
 jigsaw-agile-community-rules
 jigsaw-multilingual-toxic-comment-classification
 jigsaw-toxic-severity-rating
