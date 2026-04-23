@@ -71,6 +71,7 @@ otto-recommender-system
 pii-detection-removal-from-educational-data
 playground-series-s6e3
 prostate-cancer-grade-assessment
+quickdraw-doodle-recognition
 quora-insincere-questions-classification
 quora-question-pairs
 ranzcr-clip-catheter-line-classification
